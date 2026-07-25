@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Default Dark Theme (Midnight) */
+:root, [data-theme="dark"] {
+  --bg-app: #0b0f19;
+  --text-main: #f3f4f6;
+  --text-secondary: #cbd5e1;
+  --text-muted: #9ca3af;
+  --card-bg: #0f172a;
+  --card-border: #1e293b;
+  --scrollbar-track: #0f172a;
+  --scrollbar-thumb: #334155;
+  color-scheme: dark;
+}
+
+/* High Contrast Professional Light Theme */
+[data-theme="light"] {
+  --bg-app: #f8fafc;
+  --text-main: #020617;
+  --text-secondary: #0f172a;
+  --text-muted: #334155;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* --- GOOGLE MATERIAL-INSPIRED LIGHT THEME OVERRIDES --- */
+[data-theme="light"] {
+  /* Page Canvas Body Background */
+  body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+  }
+
+  .bg-\[\#0b0f19\], 
+  .bg-slate-950 {
+    background-color: #f8fafc !important;
+  }
+
+  /* Primary Container Cards -> Crisp White with Google Card Elevation & Clean Gray Borders */
+  .bg-slate-900, 
+  .bg-slate-900\/30,
+  .bg-slate-900\/40,
+  .bg-slate-900\/50, 
+  .bg-slate-900\/60, 
+  .bg-slate-900\/80, 
+  .bg-slate-900\/90,
+  .bg-slate-950\/40,
+  .bg-slate-950\/50,
+  .bg-slate-950\/60,
+  .bg-slate-950\/70,
+  .bg-slate-950\/80,
+  .bg-slate-950\/90 {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.12), 0 1px 2px 0 rgba(60, 64, 67, 0.08) !important;
+  }
+
+  /* Header & Navigation Bar */
+  header {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-bottom-color: #cbd5e1 !important;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.08) !important;
+  }
+
+  /* Secondary Tonal Sub-panels / Inner Table Rows / Filter Bars */
+  .bg-slate-850, 
+  .bg-slate-800, 
+  .bg-slate-800\/30,
+  .bg-slate-800\/40, 
+  .bg-slate-800\/50, 
+  .bg-slate-800\/60, 
+  .bg-slate-800\/80,
+  .bg-slate-800\/90 {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+  }
+
+  /* Clean Visible Gray Borders for Light Mode Containers */
+  .border-slate-800, 
+  .border-slate-850, 
+  .border-slate-750, 
+  .border-slate-700, 
+  .border-slate-800\/90, 
+  .border-slate-800\/80, 
+  .border-slate-800\/60,
+  .border-slate-800\/40 {
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Ultra-Bold Dark Professional Typography for Light Mode */
+  .text-white, 
+  .text-slate-100,
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a !important; /* Bold Google Charcoal Black */
+    font-weight: 700 !important;
+  }
+
+  .text-slate-200, 
+  .text-slate-300 {
+    color: #1e293b !important; /* Deep Slate Body Text */
+    font-weight: 600 !important;
+  }
+
+  .text-slate-400 {
+    color: #334155 !important; /* Crisp Readable Description Text */
+    font-weight: 500 !important;
+  }
+
+  .text-slate-500 {
+    color: #475569 !important; /* Visible Captions & Labels */
+    font-weight: 500 !important;
+  }
+
+  .text-slate-600 {
+    color: #64748b !important;
+  }
+
+  /* Monospace Font Contrast */
+  .font-mono {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  /* High-Contrast Accents on Light Backgrounds */
+  .text-emerald-400, .text-emerald-300 {
+    color: #047857 !important; /* High-contrast Emerald 700 */
+    font-weight: 700 !important;
+  }
+
+  .text-blue-400 {
+    color: #1d4ed8 !important; /* High-contrast Blue 700 */
+    font-weight: 700 !important;
+  }
+
+  .text-purple-400 {
+    color: #7e22ce !important; /* High-contrast Purple 700 */
+    font-weight: 700 !important;
+  }
+
+  .text-amber-400 {
+    color: #b45309 !important; /* High-contrast Amber 700 */
+    font-weight: 700 !important;
+  }
+
+  /* Badge, Chip & Pill Styling in Light Mode */
+  .bg-emerald-500\/10, .bg-emerald-600\/15, .bg-emerald-950\/30 {
+    background-color: #e6f4ea !important;
+    border-color: #a8dab5 !important;
+    color: #047857 !important;
+    font-weight: 700 !important;
+  }
+
+  .bg-blue-500\/10, .bg-blue-600\/15 {
+    background-color: #e8f0fe !important;
+    border-color: #aecbfa !important;
+    color: #1d4ed8 !important;
+    font-weight: 700 !important;
+  }
+
+  .bg-purple-500\/10, .bg-purple-600\/15 {
+    background-color: #f3e8ff !important;
+    border-color: #d8b4fe !important;
+    color: #7e22ce !important;
+    font-weight: 700 !important;
+  }
+
+  .bg-cyan-600\/15 {
+    background-color: #e0f2fe !important;
+    border-color: #7dd3fc !important;
+    color: #0369a1 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Crisp Professional Form Inputs */
+  input, textarea, select {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: #64748b !important;
+    font-weight: 400 !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+
+

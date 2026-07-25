@@ -1,0 +1,6 @@
+{
+  "name": "KRÜSt",
+  "description": "Adaptive Career Readiness Engine that measures readiness, identifies skill gaps, and generates personalized roadmaps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
