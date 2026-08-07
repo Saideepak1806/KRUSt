@@ -129,36 +129,6 @@ The production server will listen on `http://localhost:3000` (or `PORT` defined 
 | `npm run clean` | Removes built artifacts (`dist/` directory). |
 
 ---
-
-## 📁 Files Updated for GitHub Commit
-
-When committing these updates to GitHub, the following files contain the key changes:
-
-1. **`server.ts`**:
-   - Added `/api/assessment/questions` (Generates 10 scenario-based questions per level for core competencies)
-   - Added `/api/interview/question` (Generates HR and Technical mock interview questions)
-   - Added `/api/interview/evaluate` (Evaluates candidate answers for communication clarity, technical depth, and generates mistake corrections)
-
-2. **`src/components/Assessment.tsx`**:
-   - Implemented 3-level scenario question flow (10 questions per level) with individual level scores (L1, L2, L3) and combined average score calculation.
-
-3. **`src/types.ts`**:
-   - Updated `Attempt` and `UserSkillState` interfaces to include `levelScores: Record<number, number>`.
-
-4. **`src/components/Dashboard.tsx`**:
-   - Added Level 1, Level 2, Level 3 score badges on skill cards and created the AI HR Mock Interview status card with 80% competency completion eligibility tracker.
-
-5. **`src/App.tsx`**:
-   - Added eligibility checks (`isAIInterviewUnlocked` requiring ≥80% average across all core competencies) and locked modal flow (`showInterviewLockedModal`).
-
-6. **`src/components/AIInterview.tsx`**:
-   - Personal AI HR Mock Interview with Web Speech API TTS, voice input, communication & technical evaluation, mistake corrections, and unlimited reassessments.
-
-7. **`README.md`**:
-   - Documented the updated 3-level progressive scenario assessments (10 Qs/level), combined average score logic, 80% eligibility gate for AI Interview, and GitHub push guide.
-
----
-
 ---
 
 ## 👥 Team Members
