@@ -159,21 +159,6 @@ When committing these updates to GitHub, the following files contain the key cha
 
 ---
 
-## 📤 Pushing Code to GitHub
-
-To push these updates to your GitHub repository, run the following commands in your terminal:
-
-```bash
-# 1. Add modified files
-git add server.ts src/types.ts src/components/Assessment.tsx src/components/Dashboard.tsx src/App.tsx src/components/AIInterview.tsx README.md
-
-# 2. Commit changes
-git commit -m "feat: implement 3-level progressive assessments with 10 scenario questions per level, average scoring, and 80% threshold for AI Interview unlock"
-
-# 3. Push to GitHub main branch
-git push origin main
-```
-
 ---
 
 ## 👥 Team Members
