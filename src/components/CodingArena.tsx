@@ -10,11 +10,11 @@ import { TestCase, Problem, PRESET_PROBLEMS, PROBLEM_SPECIFICATIONS } from "../d
 
 interface CodingArenaProps {
   career?: Career | null;
+  customSkills?: any[];
+  onBack?: () => void;
 }
 
-
-
-export default function CodingArena({ career }: CodingArenaProps) {
+export default function CodingArena({ career, onBack }: CodingArenaProps) {
   const [currentProblem, setCurrentProblem] = useState<Problem | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("python");
   const [code, setCode] = useState<string>("");
@@ -165,6 +165,18 @@ export default function CodingArena({ career }: CodingArenaProps) {
   return (
     <div className="max-w-7xl w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 space-y-6">
       
+      {/* Top Back Navigation */}
+      <div>
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="k-btn-ghost text-xs px-0 hover:bg-transparent mb-1"
+          >
+            ← BACK TO SYSTEM
+          </button>
+        )}
+      </div>
+
       {/* Dynamic Career Guidance Banner */}
       <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-5 relative overflow-hidden">
         <div className="absolute -top-12 -right-12 bg-emerald-500/5 w-48 h-48 rounded-full blur-3xl pointer-events-none"></div>
@@ -505,7 +517,7 @@ export default function CodingArena({ career }: CodingArenaProps) {
 
             {/* Compile Console Actions footer */}
             <div className="flex items-center justify-between px-4 py-3 bg-slate-950 border-t border-slate-900">
-              <span className="text-[10px] font-mono text-slate-500 uppercase">
+              <span className="text-[10px] font-mono text-slate-500 uppercase font-bold">
                 {lineCount} lines written
               </span>
 
@@ -513,7 +525,7 @@ export default function CodingArena({ career }: CodingArenaProps) {
                 <button
                   onClick={() => handleRunCode(false)}
                   disabled={isRunning || isGenerating}
-                  className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                  className="k-btn-secondary text-xs py-1.5 px-4"
                 >
                   <Play className="w-3.5 h-3.5 text-slate-400" />
                   <span>Run Verification</span>
@@ -522,7 +534,7 @@ export default function CodingArena({ career }: CodingArenaProps) {
                 <button
                   onClick={() => handleRunCode(true)}
                   disabled={isRunning || isGenerating}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold px-5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                  className="k-btn-primary text-xs py-1.5 px-5"
                 >
                   {isRunning ? (
                     <>

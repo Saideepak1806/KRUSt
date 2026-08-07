@@ -122,6 +122,33 @@ export default function CodingTestAssessment({
     if (isSubmit) setIsSubmitting(true);
     else setIsRunning(true);
     setRunResult(null);
+
+    const trimmed = (code || "").trim();
+    const lower = trimmed.toLowerCase();
+    const isUnedited = 
+      !trimmed || 
+      trimmed.length < 15 || 
+      lower.includes("write your solution here") || 
+      lower.includes("write your code here") ||
+      (lower.includes("pass") && trimmed.length < 45) ||
+      (lower.includes("return [];") && trimmed.length < 45);
+
+    if (isUnedited) {
+      setRunResult({
+        success: false,
+        status: "Compile Error",
+        stderr: `Error: No code implementation written in ${selectedLanguage}. You must write your solution algorithm in ${selectedLanguage} before submitting.`,
+        stdout: "[Sandbox] Aborted execution: Unedited starter template.",
+        testCases: currentProblem.testCases.map(tc => ({ ...tc, passed: false, actual: "No output" })),
+        complexity: { time: "N/A", space: "N/A" },
+        aiFeedback: `❌ **No Code Typed**: Please write your algorithm solution code in ${selectedLanguage} before evaluating.`
+      });
+      setIsRunning(false);
+      setIsSubmitting(false);
+      setConsoleTab("stdout");
+      return;
+    }
+
     setConsoleTab("results");
 
     try {
@@ -408,17 +435,17 @@ export default function CodingTestAssessment({
                 id="assess-run-code-btn"
                 disabled={isRunning || isSubmitting}
                 onClick={() => handleRunCode(false)}
-                className="bg-slate-800 hover:bg-slate-700 disabled:bg-slate-900 disabled:text-slate-700 text-white font-mono text-xs font-bold py-1.5 px-4 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer"
+                className="k-btn-secondary text-xs py-1.5 px-4"
               >
                 {isRunning ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    Running...
+                    <span>Running...</span>
                   </>
                 ) : (
                   <>
                     <Play className="w-3.5 h-3.5" />
-                    Run Code
+                    <span>Run Code</span>
                   </>
                 )}
               </button>
@@ -427,17 +454,17 @@ export default function CodingTestAssessment({
                 id="assess-submit-code-btn"
                 disabled={isRunning || isSubmitting}
                 onClick={() => handleRunCode(true)}
-                className="bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-900 disabled:text-slate-700 text-slate-950 text-xs font-bold py-1.5 px-4 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer"
+                className="k-btn-primary text-xs py-1.5 px-4"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-950" />
-                    Submitting...
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Submitting...</span>
                   </>
                 ) : (
                   <>
                     <CheckSquare className="w-3.5 h-3.5" />
-                    Submit & Evaluate
+                    <span>Submit & Evaluate</span>
                   </>
                 )}
               </button>

@@ -210,37 +210,37 @@ export default function QuestionBankExaminer({
         <div>
           <button
             onClick={onBack}
-            className="text-xs text-slate-400 hover:text-emerald-400 font-mono flex items-center gap-1.5 transition-colors mb-2 cursor-pointer"
+            className="k-btn-ghost text-xs px-0 hover:bg-transparent mb-1"
           >
             ← BACK TO SYSTEM
           </button>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-2">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-100 tracking-tight flex items-center gap-2">
             <Cpu className="w-6.5 h-6.5 text-emerald-400" />
-            AI-Powered Question Engine Explorer
+            AI Question Bank Engine
           </h1>
           <p className="text-slate-400 text-xs mt-1">
-            Analyze active topic coverage, check item properties, practice answers, or request deep concept coaching from AI.
+            Analyze topic coverage, inspect item attributes, practice scenarios, or request AI concept tutoring.
           </p>
         </div>
 
         {/* View Toggle */}
-        <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800">
+        <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
           <button
             onClick={() => setActiveTab('explorer')}
-            className={`px-4 py-1.5 text-xs font-mono font-bold rounded transition-all cursor-pointer ${
+            className={`px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer ${
               activeTab === 'explorer' 
                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                : 'text-slate-500 hover:text-slate-300'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             QUESTION EXAMINER
           </button>
           <button
             onClick={() => setActiveTab('syllabus')}
-            className={`px-4 py-1.5 text-xs font-mono font-bold rounded transition-all cursor-pointer flex items-center gap-1 ${
+            className={`px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
               activeTab === 'syllabus' 
                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                : 'text-slate-500 hover:text-slate-300'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             <Brain className="w-3.5 h-3.5" />

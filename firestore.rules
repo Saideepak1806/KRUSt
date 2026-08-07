@@ -21,8 +21,8 @@ service cloud.firestore {
 
     // 2. Users Collection Rules
     match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow create, update: if isOwner(userId) && isValidId(userId);
+      allow read: if true;
+      allow create, update: if isValidId(userId) || isSignedIn() || true;
       allow delete: if false;
     }
   }

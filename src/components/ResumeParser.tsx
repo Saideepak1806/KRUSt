@@ -13,6 +13,7 @@ interface ResumeParserProps {
   username: string | null;
   currentAnalysis: any;
   currentRoadmap: RoadmapItem[] | null;
+  onBack?: () => void;
 }
 
 export default function ResumeParser({
@@ -20,7 +21,8 @@ export default function ResumeParser({
   onApplyRoadmap,
   username,
   currentAnalysis,
-  currentRoadmap
+  currentRoadmap,
+  onBack
 }: ResumeParserProps) {
   const [activeTab, setActiveTab] = useState<"upload" | "results">(currentAnalysis ? "results" : "upload");
   const [file, setFile] = useState<File | null>(null);
@@ -32,13 +34,20 @@ export default function ResumeParser({
 
   // Analysis result states
   const [results, setResults] = useState<{
+    targetCareerId?: string;
+    targetCareerName?: string;
     atsScore: number;
     summary: string;
     parsedSkills: string[];
+    goods?: string[];
+    bads?: string[];
+    projectGaps?: string[];
     skillGaps: string[];
     experienceGaps: string[];
     roadmap: RoadmapItem[];
   } | null>(currentAnalysis ? { ...currentAnalysis, roadmap: currentRoadmap || [] } : null);
+
+  const isCareerMismatch = results && results.targetCareerName && results.targetCareerName.toLowerCase() !== career.name.toLowerCase();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -164,13 +173,18 @@ export default function ResumeParser({
   const handleApplyRoadmap = () => {
     if (results) {
       onApplyRoadmap(results.roadmap, {
+        targetCareerId: results.targetCareerId || career.id,
+        targetCareerName: results.targetCareerName || career.name,
         atsScore: results.atsScore,
         summary: results.summary,
         parsedSkills: results.parsedSkills,
+        goods: results.goods || [],
+        bads: results.bads || [],
+        projectGaps: results.projectGaps || [],
         skillGaps: results.skillGaps,
         experienceGaps: results.experienceGaps,
       });
-      alert("Adaptive Roadmap synced and saved successfully! Your dashboard has been updated.");
+      alert(`Adaptive Roadmap for "${career.name}" synced and saved successfully! Your dashboard has been updated.`);
     }
   };
 
@@ -185,6 +199,14 @@ export default function ResumeParser({
       {/* Tab Header */}
       <div className="border-b border-slate-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="text-xs text-slate-400 hover:text-emerald-400 font-mono flex items-center gap-1.5 transition-colors mb-2 cursor-pointer"
+            >
+              ← BACK TO DASHBOARD
+            </button>
+          )}
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
             Adaptive AI Resume Auditor
@@ -380,6 +402,25 @@ export default function ResumeParser({
               exit={{ opacity: 0 }}
               className="space-y-6"
             >
+              {/* Career Switch Warning Banner */}
+              {isCareerMismatch && (
+                <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-amber-300">
+                  <div className="flex items-start gap-2.5">
+                    <AlertCircle className="w-5 h-5 shrink-0 text-amber-400 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-amber-200">Career Goal Switched! </span>
+                      Your current audit report was computed for <strong className="text-white underline">{results?.targetCareerName || 'Previous Role'}</strong>. You are now viewing <strong className="text-emerald-400">{career.name}</strong>.
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab("upload")}
+                    className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-3.5 py-1.5 rounded-lg text-xs shrink-0 cursor-pointer transition-all flex items-center gap-1.5 font-mono"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" /> Re-Audit for {career.name}
+                  </button>
+                </div>
+              )}
+
               {/* Report Header Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-950/40 p-5 rounded-xl border border-slate-800/80">
                 {/* Score circle */}
@@ -431,6 +472,71 @@ export default function ResumeParser({
                   </p>
                 </div>
               </div>
+
+              {/* Goods & Bads Analysis Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Resume Goods (Strengths) */}
+                <div className="bg-emerald-950/20 p-5 rounded-xl border border-emerald-800/40 space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                    <CheckCircle className="w-4 h-4 shrink-0 text-emerald-400" />
+                    Resume Goods & Strong Points (Highlights)
+                  </h4>
+                  {results?.goods && results.goods.length > 0 ? (
+                    <ul className="space-y-2">
+                      {results.goods.map((good, idx) => (
+                        <li key={idx} className="text-xs text-emerald-200/90 flex items-start gap-2 bg-emerald-950/40 p-2.5 rounded border border-emerald-900/50">
+                          <span className="text-emerald-400 font-bold select-none">✓</span>
+                          <span>{good}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-xs text-slate-400">Baseline resume profile loaded.</p>
+                  )}
+                </div>
+
+                {/* Resume Bads (Weaknesses & Red Flags) */}
+                <div className="bg-rose-950/20 p-5 rounded-xl border border-rose-800/40 space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+                    Resume Weaknesses & Red Flags (Bads)
+                  </h4>
+                  {results?.bads && results.bads.length > 0 ? (
+                    <ul className="space-y-2">
+                      {results.bads.map((bad, idx) => (
+                        <li key={idx} className="text-xs text-rose-200/90 flex items-start gap-2 bg-rose-950/40 p-2.5 rounded border border-rose-900/50">
+                          <span className="text-rose-400 font-bold select-none">✕</span>
+                          <span>{bad}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-xs text-emerald-400 flex items-center gap-1.5">
+                      <CheckCircle className="w-4 h-4" /> No major red flags detected in resume formatting!
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Recommended Projects & Portfolio Gaps */}
+              {results?.projectGaps && results.projectGaps.length > 0 && (
+                <div className="bg-cyan-950/20 p-5 rounded-xl border border-cyan-800/40 space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 shrink-0 text-cyan-400" />
+                    Missing Portfolio Projects (Build These to Stand Out)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {results.projectGaps.map((proj, idx) => (
+                      <div key={idx} className="bg-slate-950/60 p-3.5 rounded-lg border border-cyan-900/40 flex items-start gap-2.5">
+                        <span className="text-xs font-mono font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded shrink-0">
+                          PROJ #{idx + 1}
+                        </span>
+                        <p className="text-xs text-cyan-100 font-medium leading-relaxed">{proj}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Detected Gaps breakdown */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
